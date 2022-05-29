@@ -133,3 +133,7 @@ data/
 
 # binaries
 .bin
+
+# MLFlow
+mlruns
+mlflow.db
