@@ -130,10 +130,13 @@ dmypy.json
 
 # data
 data/
+output
 
 # binaries
 .bin
 
 # MLFlow
+artifacts
+models
 mlruns
 mlflow.db
