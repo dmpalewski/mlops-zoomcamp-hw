@@ -1,6 +1,9 @@
 # 2. Experiment tracking and model management
 
 
+* [Slides](https://drive.google.com/file/d/1YtkAtOQS3wvY7yts_nosVlXrLQBq5q37/view?usp=sharing)
+
+
 ## 2.1 Experiment tracking intro
 
 <a href="https://www.youtube.com/watch?v=MiA7LQin9c8&list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK">
@@ -72,4 +75,6 @@ Did you take notes? Add them here:
 * [Minimalist MLflow code reference by Anna V](https://github.com/annnvv/mlops_zoomcamp/blob/main/notes/module2_notes_MLflow.md)
 * [Notes from second lesson by Neimv](https://gitlab.com/neimv/mlops/-/blob/main/lessons_weeks/notes_2.md)
 * [2nd Week Experiment & Tracking notes by Ayoub.B](https://github.com/ayoub-berdeddouch/mlops-journey/blob/main/experiment_tracking_02.md)
+* [Notes on Experiment Tracking with MLflow (Jupyter Book) by particle1331](https://particle1331.github.io/inefficient-networks/notebooks/mlops/2-mlflow/2-mlflow.html)
+* [Week 2: Experiment & Tracking Notes by Bengsoon Chuah](https://github.com/bengsoon/mlops-zoomcamp/blob/main/02-experiment-tracking/notes/Experiment_Tracking_notes.md)
 * Send a PR, add your notes above this line
