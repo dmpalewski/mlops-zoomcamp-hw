@@ -131,6 +131,10 @@ dmypy.json
 # data
 data/
 output
+*.db
+*.parquet
+*.html
+*.csv
 
 # binaries
 .bin
@@ -139,4 +143,3 @@ output
 artifacts
 models
 mlruns
-*.db
