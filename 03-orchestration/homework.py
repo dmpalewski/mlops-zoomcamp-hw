@@ -10,6 +10,10 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 
 from prefect import flow, task, get_run_logger
+from prefect.deployments import DeploymentSpec
+from prefect.orion.schemas.schedules import CronSchedule
+from prefect.flow_runners import SubprocessFlowRunner
+
 
 DATA_DIR = Path(__file__).parents[1] / "data"
 MODELS_DIR = Path(__file__).parents[1] / "models"
@@ -102,4 +106,11 @@ def main(date: Union[None, str]="2021-08-15"):
     logger.info(f"DictVectorizer saved to {trained_vectorizer_path}")
     run_model(df_val_processed, categorical, dv, lr)
 
-main("2021-08-15")
+
+DeploymentSpec(
+    name="cron-schedule-deployment",
+    flow=main,
+    schedule=CronSchedule(cron="0 9 15 * *", timezone="CET"),
+    flow_runner=SubprocessFlowRunner(),
+    tags=["cron"]
+)
