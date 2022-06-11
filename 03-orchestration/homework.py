@@ -1,11 +1,28 @@
 import pandas as pd
 
+from datetime import datetime, timedelta
+from pathlib import Path
+from typing import Union
+
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 
 from prefect import flow, task, get_run_logger
 
+DATA_DIR = Path(__file__).parents[1] / "data"
+
+@task
+def get_paths(date: Union[None, str]):
+    logger = get_run_logger()
+    date = datetime.fromisoformat(date) if date else datetime.today()
+    val_date = date.replace(day=1) - timedelta(days=1)
+    train_date = val_date.replace(day=1) - timedelta(days=1)
+    val_path = DATA_DIR / f"fhv_tripdata_{val_date.strftime('%Y-%m')}.parquet"
+    train_path = DATA_DIR / f"fhv_tripdata_{train_date.strftime('%Y-%m')}.parquet"
+    logger.info(f"Training data: {train_path}")
+    logger.info(f"Validation data: {val_path}")
+    return train_path, val_path
 
 @task
 def read_data(path):
@@ -59,10 +76,10 @@ def run_model(df, categorical, dv, lr):
     return
 
 @flow
-def main(train_path: str = './data/fhv_tripdata_2021-01.parquet', 
-           val_path: str = './data/fhv_tripdata_2021-02.parquet'):
+def main(date: str="2021-08-15"):
 
     categorical = ['PUlocationID', 'DOlocationID']
+    train_path, val_path = get_paths(date).result()
 
     df_train = read_data(train_path)
     df_train_processed = prepare_features(df_train, categorical)
@@ -74,4 +91,4 @@ def main(train_path: str = './data/fhv_tripdata_2021-01.parquet',
     lr, dv = train_model(df_train_processed, categorical).result()
     run_model(df_val_processed, categorical, dv, lr)
 
-main()
+main("2021-08-15")
