@@ -5,12 +5,18 @@ import argparse
 import pickle
 import pandas as pd
 
+from pathlib import Path
+
+
+OUTPUT_DIR = Path(__file__).parent / "ouptut"
+OUTPUT_DIR.mkdir(exist_ok=True, parents=True)
+
 
 with open('model.bin', 'rb') as f_in:
     dv, lr = pickle.load(f_in)
 
-
 categorical = ['PUlocationID', 'DOlocationID']
+
 
 def read_data(filename):
     df = pd.read_parquet(filename)
@@ -24,6 +30,7 @@ def read_data(filename):
     
     return df
 
+
 def prepare_output(input, predictions, year, month):
     df = pd.DataFrame()
     df['ride_id'] = f'{year:04d}/{month:02d}_' + input.index.astype('str')
@@ -35,22 +42,18 @@ def main(args):
     year = args.year
     month = args.month
 
-
     df = read_data(f'https://nyc-tlc.s3.amazonaws.com/trip+data/fhv_tripdata_{year:04d}-{month:02d}.parquet')
-
 
     dicts = df[categorical].to_dict(orient='records')
     X_val = dv.transform(dicts)
     y_pred = lr.predict(X_val)
 
-
     pred_avg = sum(y_pred) / len(y_pred)
     print(f'Average prediction for {year:04d}-{month:02d} is {pred_avg:.2f}')
 
-
     df_result = prepare_output(input=df, predictions=y_pred, year=year, month=month)
     df_result.to_parquet(
-        "output/h4q2.parquet",
+        OUTPUT_DIR / "h4q2.parquet",
         engine='pyarrow',
         compression=None,
         index=False
