@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+import argparse
 import pickle
 import pandas as pd
 
@@ -30,9 +31,9 @@ def prepare_output(input, predictions, year, month):
     return df
 
 
-def main():
-    year = 2021
-    month = 2
+def main(args):
+    year = args.year
+    month = args.month
 
 
     df = read_data(f'https://nyc-tlc.s3.amazonaws.com/trip+data/fhv_tripdata_{year:04d}-{month:02d}.parquet')
@@ -57,4 +58,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--year', type=int, help='Year of the dataset to be used.')
+    parser.add_argument('--month', type=int, help='Month of the dataset to be used.')
+    args = parser.parse_args()
+    main(args)
