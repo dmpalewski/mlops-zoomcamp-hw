@@ -143,3 +143,8 @@ output
 artifacts
 models
 mlruns
+__pycache__/
+**.env
+**.terraform/
+**.terraform.lock*
+**terraform.tfstate*
